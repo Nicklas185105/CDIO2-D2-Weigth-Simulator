@@ -1,9 +1,9 @@
 package controller;
 
-import console.DummyConsoleController;
-import console.IWeightInterfaceController;
 import socket.DummySocketHandler;
 import socket.ISocketController;
+import weight.DummyConsoleController;
+import weight.IWeightInterfaceController;
 /**
  * Simple class to fire up application and inject implementations
  * @author Christian

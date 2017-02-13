@@ -1,11 +1,14 @@
-package console;
+package weight;
+
+import java.util.Scanner;
 
 public class DummyConsoleController implements IWeightInterfaceController{
 
 	@Override
 	public void run() {
 		// TODO Some logic to catch some input and notify the observers
-		
+		Scanner scan = new Scanner(System.in);
+
 	}
 
 	@Override
