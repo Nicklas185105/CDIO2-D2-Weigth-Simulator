@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Locale;
+
 import socket.ISocketController;
 import socket.ISocketObserver;
 import socket.SocketInMessage;
@@ -72,7 +74,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 
 	@Override
 	public void notifyWeightChange(double newWeight) {
-		weightController.showMessagePrimaryDisplay(String.valueOf(newWeight) + " KG");
+		weightController.showMessagePrimaryDisplay(String.format(Locale.US, "%.4f", newWeight) + " KG");
 	}
 
 }
