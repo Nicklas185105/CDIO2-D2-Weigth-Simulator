@@ -8,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -23,17 +22,15 @@ public class FxApp extends Application {
 	private Text[] txtsft = new Text[6];
 	private Text[] txtinfo = new Text[4];
 	private TextField userInput;
-	private Slider slider, dtop, dbottom;
-	private ProgressBar pbload;
-	private Button btnzero, btntara, btnshift; //, btnexit, btncancel; 
+	private Slider slider;
+	private Button btnzero, btntara, btnshift; 
 	private Button[] btnsft = new Button[6];
 	private Button[] btnnum = new Button[10];
 	public static final String[] str_lower = {".", "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vxy", "z"};
 	public static final String[] str_upper = {".", "ABC", "DEF", "GHI", "JKL", "MNO", "PQR", "STU", "VXY", "Z"};
 	private InputType inputType = InputType.NUMBERS;
-	private boolean userInputInprogress = false, userinputAllowNegative = false;
+	private boolean userInputInprogress = false;
 	private boolean userInputPlaceholderTentative = false, userInputTypeLocked = false;
-//	private Callback callback;
 	private int caretPosition = 0;
 	private Local_GUI l;
 
@@ -112,13 +109,6 @@ public class FxApp extends Application {
 				@Override public void handle(ActionEvent event) { onTaraButtonPressed(); }
 			});
 			
-//			btncancel.setVisible(false);
-			//			btncancel = (Button) loader.getNamespace().get("btncancel");
-			//			btncancel.setOnAction(new EventHandler<ActionEvent>() { 
-			//				@Override public void handle(ActionEvent event) { 
-			//				}
-			//			});
-
 			final FxAppInputBtnHandler inputHandler = new FxAppInputBtnHandler();
 			for(int i=0; i < 10; i++){
 				final int btn = i;
@@ -137,11 +127,6 @@ public class FxApp extends Application {
 			btnzero.setOnAction(new EventHandler<ActionEvent>() { 
 				@Override public void handle(ActionEvent event) { onZeroButtonPressed(); }
 			});
-
-			dtop = (Slider) loader.getNamespace().get("delta_top");
-			dbottom = (Slider) loader.getNamespace().get("delta_bottom");
-			pbload = (ProgressBar) loader.getNamespace().get("pb_load");
-//			turnOffDeltabar();
 
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -194,19 +179,6 @@ public class FxApp extends Application {
 			}
 		});
 	}
-//	public void printInfo(final int pos, final String msg) {
-//		Platform.runLater(new Runnable() {
-//			@Override
-//			public void run() {
-//				txtinfo[pos-1].setText(msg);
-//				if(pos == 3){
-//					txtinfo[3].setVisible(true);
-//					userInput.setVisible(false);
-//					txtbottom.setVisible(false);
-//				}
-//			}
-//		});
-//	}
 	public void printBottom(final String msg) {
 		Platform.runLater(new Runnable() {
 			@Override
@@ -236,125 +208,6 @@ public class FxApp extends Application {
 		}
 	}
 
-	// UserInput
-//	public void getUserInput(String msg, String placeholder, boolean placeholderIsTentative, InputType inputType,
-//			boolean inputTypeLocked, boolean allowNegative, Callback callback) { 
-//		this.callback = callback;
-//		userInputInprogress = true;
-//
-//		for(Text t : txtinfo) t.setText("");
-//		txtinfo[0].setText(msg);
-//		txtinfo[3].setVisible(false);
-//		userInput.setText(placeholder);
-//		userInput.setVisible(true);
-//		txtbottom.setVisible(false);
-//		caretPosition = placeholder.length();
-//		userInput.positionCaret(caretPosition);
-//		userInputPlaceholderTentative = placeholderIsTentative;
-//		userinputAllowNegative = allowNegative;
-//
-//		String[] texts = l.getDefaultTexts();
-//		String okStr = texts[0];
-//		String cancelStr = texts[1];
-//		String eraseStr = texts[2];
-//		softkeysShow(new String[] {allowNegative ? "-/+" : "", eraseStr, "<--", "-->", okStr, cancelStr}, 0, new boolean[]{});
-//
-//		switch(inputType){
-//		case LOWER: setButtonsLower(); break;
-//		case UPPER: setButtonsUpper(); break;
-//		case NUMBERS: setButtonsNumbers(); break;
-//		}
-//		this.userInputTypeLocked = inputTypeLocked;
-//
-//		Platform.runLater(new Runnable() { @Override public void run() { userInput.requestFocus(); } });
-//	}
-//	private void softkeyPressedUserInput(int i) {
-//		switch(i){
-//		case 0:	if(userinputAllowNegative) toggelNegative(); break;  // +/- 
-//		case 1: backspace(); break; // Erase
-//		case 2: moveCaret(false); break; // <--
-//		case 3: moveCaret(true); break; // -->
-//		case 4: // OK
-//			userInputInprogress = false;
-//			for(Text t : txtinfo) t.setText("");
-//			softkeysHide();
-//			String userinput = userInput.getText();
-//			userInput.setText("");
-//			callback.onSuccess(userinput);
-//			break;
-//		case 5: // Cancel
-//			userInputInprogress = false;
-//			for(Text t : txtinfo) t.setText("");
-//			softkeysHide();
-//			userInput.setText("");
-//			callback.onFailure();
-//			break;
-//		}
-//	}
-//	private void moveCaret(boolean forward){
-//		if(forward && caretPosition < userInput.getText().length()){
-//			caretPosition += 1;
-//		} else if(!forward && caretPosition > 0){
-//			caretPosition -= 1;
-//		}
-//		userInputPlaceholderTentative = false;
-//		userInput.requestFocus();
-//		userInput.positionCaret(caretPosition);
-//	}
-//	private void backspace(){
-//		if(caretPosition > 0){
-//			caretPosition -= 1;
-//			String pre = userInput.getText().substring(0, caretPosition);
-//			String post = userInput.getText().substring(caretPosition+1);
-//			userInput.setText(pre+post);
-//			userInput.requestFocus();
-//			userInput.positionCaret(caretPosition);
-//		}
-//	}
-//	private void toggelNegative() {
-//		String txt = userInput.getText();
-//		txt = txt.startsWith("-") ? txt.substring(1) : "-"+txt;
-//		userInput.setText(txt);
-//		userInput.requestFocus();
-//		userInput.positionCaret(caretPosition);
-//	}
-//
-//	// Deltabar
-//	public void setDeltabar(double target, double tol, double netto) {
-//		double dtopMin = target - (2*tol);
-//		double dtopMax = target + (2*tol);
-//		dtop.setMin(dtopMin);
-//		dtop.setMax(dtopMax);
-//		dtop.setValue(netto);
-//		dtop.setShowTickMarks(true);
-//		dtop.setMajorTickUnit(tol);
-//		dtop.setVisible(true);
-//
-//		double dbottomMin = 0;
-//		double dbottomMax = 2*target;
-//		dbottom.setMin(dbottomMin);
-//		dbottom.setMax(dbottomMax);
-//		dbottom.setValue(netto);
-//		dbottom.setVisible(true);
-//	}
-//	public void updateDelta(double netto) {
-////		netto /= 1000d;
-//		double target = dbottom.getMax() / 2d;
-//		double progress =  netto / target;
-//		pbload.setProgress(progress);
-//		dtop.setValue(netto);
-//		dbottom.setValue(netto);
-//	}
-//	public void resetDeltabar() {
-//		dtop.setVisible(false);
-//		dbottom.setVisible(false);
-//	}
-//	public void turnOffDeltabar(){
-//		dtop.setVisible(false);
-//		dbottom.setVisible(false);
-//		pbload.setProgress(0);
-//	}
-
 	//internal
 	private void toggle_input_type(){
 		if(userInputTypeLocked) return;
@@ -364,8 +217,6 @@ public class FxApp extends Application {
 		case NUMBERS: setButtonsLower(); break;
 		}
 	}
-
-
 	public void setButtonsLower(){
 		Platform.runLater(new Runnable() {
 			@Override

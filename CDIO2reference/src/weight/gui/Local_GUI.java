@@ -7,12 +7,6 @@ import weight.IWeightInterfaceController;
 import weight.IWeightInterfaceObserver;
 import weight.KeyPress;
 
-//import application.iSim.BadParam;
-//import application.iSim.BadState;
-//import application.iSim.Callback;	
-//import application.iSim.InputType;
-//import application.iSim.Unit;
-
 public class Local_GUI implements IWeightInterfaceController {
 	private static Local_GUI instance;
 	private ArrayList<IWeightInterfaceObserver> observers = new ArrayList<IWeightInterfaceObserver>(); 
@@ -23,48 +17,7 @@ public class Local_GUI implements IWeightInterfaceController {
 	public static Local_GUI getInstance() { return instance; }
 	public void setApp(FxApp fxApp) { this.fxApp = fxApp; fxApp.setSim(this); }
 	
-	
-	
 
-	
-
-	// load
-//	public void setMsg(String msg) { fxApp.printLoad(msg); }
-//	public void outputLoad(double newBrutto) { observer.setLoad(newBrutto, Unit.G); }
-//	public void outputTara() { 
-//		for (IWeightInterfaceObserver o : observers) {
-//			o.notifyKeyPress(keypress);
-//		}
-//	}
-//	public void outputZero() { observer.zero(); }
-//	
-//	// User input
-//	public void getUserInput(String msg, String placeholder, boolean placeholderIsTentative, InputType inputType,
-//			boolean inputTypeLocked, boolean allowNegative, Callback callback) {
-//		fxApp.getUserInput(msg, placeholder, placeholderIsTentative, inputType, inputTypeLocked, allowNegative, callback);
-//	}
-//	public String[] getDefaultTexts() { return observer.getDefaultTexts(); }
-//	
-//	// softkeys
-//	public void hideSoftkeys() { fxApp.softkeysHide(); }
-//	public void showSoftkeys(String[] sftkeys, int firstSoftkey, boolean[] sftkeysChecked){ fxApp.softkeysShow(sftkeys, firstSoftkey, sftkeysChecked); }
-//	public void outputSoftkeyPressed(int i) { observer.SoftkeyPressed(i); }
-//	
-//	// Info
-//	public void setInfoText(int pos, String msg) { fxApp.printInfo(pos, msg); }
-//	
-//	// Bottom
-//	public void setBottomText(String msg) { fxApp.printBottom(msg); }
-//
-//	// Deltabar
-//	public void resetDeltabar() { fxApp.resetDeltabar(); }
-//	public void turnOffDeltabar() { fxApp.turnOffDeltabar(); }
-//	public void setDeltabar(double target, double tol, double netto) { fxApp.setDeltabar(target, tol, netto); }
-//	public void updateDeltabar(double netto) { fxApp.updateDelta(netto); }
-//	
-//	public void cancel(){
-//		
-//	}
 	@Override
 	public void registerObserver(IWeightInterfaceObserver uiObserver) {
 		this.observers.add(uiObserver);
