@@ -146,8 +146,6 @@ public class FxApp extends Application {
 	private void onSliderValueChange(Double newValue){ l.onSliderValueChange(newValue); }
 	private void onTaraButtonPressed(){ l.onTaraButtonPressed(); }
 	private void onZeroButtonPressed(){ l.onZeroButtonPressed(); }
-	//	public String getUserInput(){ return userInput.getText(); }
-	//	public void setUserInput(String str){ userInput.setText(str); }
 	private void onNumBtnPressed(final FxAppInputBtnHandler inputHandler, final int btn) {
 		if(userInputInprogress){
 			String txt = userInput.getText();
@@ -175,7 +173,7 @@ public class FxApp extends Application {
 			@Override
 			public void run() {
 				
-				txtload.setText(load);
+				txtload.setText(load.length() > 7 ? load.substring(0, 7) : load);
 			}
 		});
 	}
