@@ -64,6 +64,9 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 		case TARA:
 			System.out.println("TARA pressed");
 			break;
+		case ZERO:
+			System.out.println("ZERO pressed");
+			break;
 		}
 
 	}
