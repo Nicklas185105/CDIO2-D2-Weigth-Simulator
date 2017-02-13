@@ -80,13 +80,13 @@ public class DummySocketHandler implements ISocketController {
 				System.out.println(inLine);
 				if (inLine==null) continue;
 				 switch (inLine.split(" ")[0]) {
-				case "RM":
+				case "RM20":
 					//TODO implement logic for RM command
 					System.out.println();
-					if ("4".equals(inLine.split(" ")[2])){
-						notifyObservers(new SocketInMessage(SocketMessageType.RM204, inLine.split(" ")[3]));
-					} else if ("8".equals(inLine.split(" ")[2])){
-						notifyObservers(new SocketInMessage(SocketMessageType.RM208,inLine.split(" ")[3]));
+					if ("4".equals(inLine.split(" ")[1])){
+						notifyObservers(new SocketInMessage(SocketMessageType.RM204, inLine.split(" ")[2]));
+					} else if ("8".equals(inLine.split(" ")[1])){
+						notifyObservers(new SocketInMessage(SocketMessageType.RM208,inLine.split(" ")[2]));
 					} 
 					break;
 				case "D":

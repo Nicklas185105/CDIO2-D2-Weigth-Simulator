@@ -18,7 +18,7 @@ public class SocketTest {
 			Socket socket = new Socket("localhost",ISocketController.Port);
 			OutputStream sos = socket.getOutputStream();
 			PrintWriter pw = new PrintWriter(sos);
-			pw.println("RM 20 4 GED");
+			pw.println("RM20 4 GED");
 			pw.flush();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

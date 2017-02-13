@@ -32,7 +32,7 @@ public class FxApp extends Application {
 	private boolean userInputInprogress = false;
 	private boolean userInputPlaceholderTentative = false, userInputTypeLocked = false;
 	private int caretPosition = 0;
-	private Local_GUI l;
+	private WeightGUI l;
 
 	public static void go(){
 		launch();
@@ -133,11 +133,11 @@ public class FxApp extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		Local_GUI.getInstance().setApp(this);
+		WeightGUI.getInstance().setApp(this);
 	}
 	public FxApp() {} 
 
-	public void setSim(Local_GUI l){
+	public void setSim(WeightGUI l){
 		this.l = l;
 	}
 

@@ -7,14 +7,14 @@ import weight.IWeightInterfaceController;
 import weight.IWeightInterfaceObserver;
 import weight.KeyPress;
 
-public class Local_GUI implements IWeightInterfaceController {
-	private static Local_GUI instance;
+public class WeightGUI implements IWeightInterfaceController {
+	private static WeightGUI instance;
 	private ArrayList<IWeightInterfaceObserver> observers = new ArrayList<IWeightInterfaceObserver>(); 
 	private FxApp fxApp;
 
-	public Local_GUI() { instance = this; }
+	public WeightGUI() { instance = this; }
 	@Override public void run() { FxApp.go(); }
-	public static Local_GUI getInstance() { return instance; }
+	public static WeightGUI getInstance() { return instance; }
 	public void setApp(FxApp fxApp) { this.fxApp = fxApp; fxApp.setSim(this); }
 	
 
