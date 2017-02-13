@@ -14,6 +14,10 @@ public class KeyPress {
 		return new KeyPress(0,'\\',KeyPressType.TARA);
 	}
 	
+	public static KeyPress Zero(){
+		return new KeyPress(0,'\\', KeyPressType.ZERO);
+	}
+	
 	public static KeyPress SoftButton(int number){
 		return new KeyPress(number, '\\', KeyPressType.SOFTBUTTON);
 	}
@@ -39,6 +43,6 @@ public class KeyPress {
 	}
 	
 	public enum KeyPressType{
-		SOFTBUTTON, TEXT, TARA
+		SOFTBUTTON, TEXT, TARA, ZERO
 	}
 }
