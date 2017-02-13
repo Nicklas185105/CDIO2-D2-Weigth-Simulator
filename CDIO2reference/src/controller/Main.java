@@ -13,9 +13,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		ISocketController socketHandler = new DummySocketHandler();
-		IWeightInterfaceController uiController = new DummyConsoleController();
+		IWeightInterfaceController weightCOntroller = new DummyConsoleController();
 		//Injecting socket and uiController into mainController - Replace with improved versions...
-		IMainController mainCtrl = new DummyMainController(socketHandler, uiController);
+		IMainController mainCtrl = new DummyMainController(socketHandler, weightCOntroller);
 		//.init and .start could be merged
 		mainCtrl.start();
 		

@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
+import socket.SocketInMessage.SocketMessageType;
+
 public class DummySocketHandler implements ISocketController {
 	Set<ISocketObserver> observers = new HashSet<ISocketObserver>();
 	// Maybe add some way to keep track of multiple connections?
@@ -68,15 +70,24 @@ public class DummySocketHandler implements ISocketController {
 			Socket activeSocket = listeningSocket.accept(); //Blocking call
 			inStream = new BufferedReader(new InputStreamReader(activeSocket.getInputStream()));
 			outStream = new DataOutputStream(activeSocket.getOutputStream());
-			String inLine;
+			String inLine = null;
+			System.out.println(inStream);
 			//.readLine is a blocking call 
 			//TODO How do you handle simultaneous input and output on socket?
 			//TODO this only allows for one open connection - how would you handle multiple connections?
-			while (!(inLine = inStream.readLine().toUpperCase()).isEmpty()){
+			while (true){
+				inLine = inStream.readLine();
+				System.out.println(inLine);
+				if (inLine==null) continue;
 				 switch (inLine.split(" ")[0]) {
 				case "RM":
 					//TODO implement logic for RM command
-					notifyObservers(new SocketInMessage("Got RM command!"));
+					System.out.println();
+					if ("4".equals(inLine.split(" ")[2])){
+						notifyObservers(new SocketInMessage(SocketMessageType.RM204, inLine.split(" ")[3]));
+					} else if ("8".equals(inLine.split(" ")[2])){
+						notifyObservers(new SocketInMessage(SocketMessageType.RM208,inLine.split(" ")[3]));
+					} 
 					break;
 				case "D":
 					break;
@@ -95,8 +106,7 @@ public class DummySocketHandler implements ISocketController {
 			 }
 		} catch (IOException e) {
 			//TODO maybe notify mainController?
-			e.printStackTrace();
-		}
+		} 
 	}
 
 }
