@@ -49,8 +49,24 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 	//Listening for socket input
 	@Override
 	public void notify(SocketInMessage message) {
-		System.out.println("Message from Socket received:" + message.getType() + ", " + message.getMessage());
-		weightController.showMessagePrimaryDisplay("Message received" +message.getType() + ", "+ message.getMessage()); //Some dummy code
+		switch(message.getType()){
+		case B:
+			break;
+		case D:
+			break;
+		case Q:
+			break;
+		case RM204:
+			weightController.showMessagePrimaryDisplay(message.getMessage());
+			break;
+		case RM208:
+			break;
+		case S:
+			break;
+		case T:
+			break;
+	
+		}
 	}
 	//Listening for UI input
 	@Override
