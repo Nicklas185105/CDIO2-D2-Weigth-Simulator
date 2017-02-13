@@ -149,7 +149,6 @@ public class FxApp extends Application {
 	//	public String getUserInput(){ return userInput.getText(); }
 	//	public void setUserInput(String str){ userInput.setText(str); }
 	private void onNumBtnPressed(final FxAppInputBtnHandler inputHandler, final int btn) {
-		System.out.println("FxApp.110 CaretPosition = "+caretPosition);
 		if(userInputInprogress){
 			String txt = userInput.getText();
 			int lengthBefore = txt.length();
@@ -175,6 +174,7 @@ public class FxApp extends Application {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+				
 				txtload.setText(load);
 			}
 		});
