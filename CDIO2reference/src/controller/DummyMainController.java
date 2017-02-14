@@ -5,6 +5,7 @@ import java.util.Locale;
 import socket.ISocketController;
 import socket.ISocketObserver;
 import socket.SocketInMessage;
+import socket.SocketOutMessage;
 import weight.IWeightInterfaceController;
 import weight.IWeightInterfaceObserver;
 import weight.KeyPress;
@@ -18,6 +19,8 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 
 	private ISocketController socketHandler;
 	private IWeightInterfaceController weightController;
+	private WeightState weightState = WeightState.READY;
+	private String weightInput = "";
 	
 	public DummyMainController(ISocketController socketHandler, IWeightInterfaceController uiController) {
 		this.init(socketHandler, uiController);
@@ -49,6 +52,18 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 	//Listening for socket input
 	@Override
 	public void notify(SocketInMessage message) {
+		switch(weightState){
+		case READY:
+			handleMessageReady(message);
+			break;
+		case RM20:
+			socketHandler.sendMessage(new SocketOutMessage("RM20 waiting for input"));
+			break;		
+		}	
+		
+	}
+	
+	private void handleMessageReady(SocketInMessage message) {
 		switch(message.getType()){
 		case B:
 			break;
@@ -58,6 +73,9 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 			break;
 		case RM204:
 			weightController.showMessagePrimaryDisplay(message.getMessage());
+			weightState=WeightState.RM20;
+			weightController.setSoftButtonTexts(new String[]{"OK"});;
+			socketHandler.sendMessage(new SocketOutMessage("RM20 B"));
 			break;
 		case RM208:
 			break;
@@ -65,25 +83,44 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 			break;
 		case T:
 			break;
-	
 		}
 	}
+
 	//Listening for UI input
 	@Override
 	public void notifyKeyPress(KeyPress keyPress) {
 		switch (keyPress.getType()) {
 		case SOFTBUTTON:
 			System.out.println("Softbutton " + keyPress.getKeyNumber() + " pressed");
+			if (weightState==WeightState.RM20 && keyPress.getKeyNumber()==0){
+				weightState= WeightState.READY;
+				socketHandler.sendMessage(new SocketOutMessage(weightInput));
+				weightInput="";
+				weightController.showMessageSecondaryDisplay(weightInput);
+			}
 			break;
 		case TEXT:
 			System.out.println("Character " + keyPress.getCharacter() + " pressed");
+			weightInput+=keyPress.getCharacter();
+			weightController.showMessageSecondaryDisplay(weightInput);
 			break;
 		case TARA:
 			System.out.println("TARA pressed");
+			if (weightState==WeightState.RM20){
+				weightState= WeightState.READY;
+				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
+				weightInput="";
+				weightController.showMessageSecondaryDisplay(weightInput);
+				weightController.showMessagePrimaryDisplay("");
+			}
 			break;
 		case ZERO:
 			System.out.println("ZERO pressed");
 			break;
+		case C:
+			System.out.println("C pressed");
+			break;
+
 		}
 
 	}

@@ -43,6 +43,6 @@ public class KeyPress {
 	}
 	
 	public enum KeyPressType{
-		SOFTBUTTON, TEXT, TARA, ZERO
+		SOFTBUTTON, TEXT, TARA, ZERO, C
 	}
 }

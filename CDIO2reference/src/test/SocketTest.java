@@ -1,6 +1,9 @@
 package test;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -18,8 +21,15 @@ public class SocketTest {
 			Socket socket = new Socket("localhost",ISocketController.Port);
 			OutputStream sos = socket.getOutputStream();
 			PrintWriter pw = new PrintWriter(sos);
-			pw.println("RM20 4 GED");
+			InputStream is = socket.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			
+			pw.println("RM20 4 INDTAST");
 			pw.flush();
+			String in = reader.readLine();
+			System.out.println(in);
+			
+			//socket.close();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

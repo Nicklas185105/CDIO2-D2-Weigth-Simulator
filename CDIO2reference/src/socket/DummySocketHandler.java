@@ -39,7 +39,7 @@ public class DummySocketHandler implements ISocketController {
 	public void sendMessage(SocketOutMessage message) {
 		if (outStream!=null){
 			try {
-				outStream.writeBytes(message.getMessage());
+				outStream.writeBytes(message.getMessage() + "\r\n");
 				outStream.flush();
 			} catch (IOException e) {
 				// TODO Notify someone???
@@ -78,7 +78,7 @@ public class DummySocketHandler implements ISocketController {
 			while (true){
 				inLine = inStream.readLine();
 				System.out.println(inLine);
-				if (inLine==null) continue;
+				if (inLine==null) break;
 				 switch (inLine.split(" ")[0]) {
 				case "RM20":
 					//TODO implement logic for RM command
