@@ -21,6 +21,8 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 	private IWeightInterfaceController weightController;
 	private WeightState weightState = WeightState.READY;
 	private String weightInput = "";
+	double load;
+	double tare;
 	
 	public DummyMainController(ISocketController socketHandler, IWeightInterfaceController uiController) {
 		this.init(socketHandler, uiController);
@@ -66,22 +68,28 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 	private void handleMessageReady(SocketInMessage message) {
 		switch(message.getType()){
 		case B:
+			load = Double.parseDouble(message.getMessage());
+			showWeight();
 			break;
 		case D:
+			weightController.showMessagePrimaryDisplay(message.getMessage());
 			break;
 		case Q:
 			break;
 		case RM204:
+		case RM208:
 			weightController.showMessagePrimaryDisplay(message.getMessage());
 			weightState=WeightState.RM20;
 			weightController.setSoftButtonTexts(new String[]{"OK"});;
 			socketHandler.sendMessage(new SocketOutMessage("RM20 B"));
 			break;
-		case RM208:
-			break;
 		case S:
+			System.out.println("sending S S message");
+			socketHandler.sendMessage(new SocketOutMessage("S S " + weightString()));
 			break;
 		case T:
+			tare = load;
+			showWeight();
 			break;
 		}
 	}
@@ -106,6 +114,11 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 			break;
 		case TARA:
 			System.out.println("TARA pressed");
+			tare = load;
+			showWeight();
+			break;
+		case ZERO:
+			System.out.println("ZERO pressed");
 			if (weightState==WeightState.RM20){
 				weightState= WeightState.READY;
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
@@ -113,9 +126,6 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 				weightController.showMessageSecondaryDisplay(weightInput);
 				weightController.showMessagePrimaryDisplay("");
 			}
-			break;
-		case ZERO:
-			System.out.println("ZERO pressed");
 			break;
 		case C:
 			System.out.println("C pressed");
@@ -127,7 +137,17 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 
 	@Override
 	public void notifyWeightChange(double newWeight) {
-		weightController.showMessagePrimaryDisplay(String.format(Locale.US, "%.4f", newWeight) + " KG");
+		load = newWeight;
+		showWeight();
+		
+	}
+
+	private void showWeight() {
+		weightController.showMessagePrimaryDisplay(weightString());
+	}
+
+	private String weightString() {
+		return String.format(Locale.US, "%.4f", load-tare) + " KG";
 	}
 
 }
