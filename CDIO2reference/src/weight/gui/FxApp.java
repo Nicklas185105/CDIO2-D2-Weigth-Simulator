@@ -1,4 +1,7 @@
 package weight.gui;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -29,10 +32,11 @@ public class FxApp extends Application {
 	public static final String[] str_lower = {".", "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vxy", "z"};
 	public static final String[] str_upper = {".", "ABC", "DEF", "GHI", "JKL", "MNO", "PQR", "STU", "VXY", "Z"};
 	private InputType inputType = InputType.NUMBERS;
-	private boolean userInputInprogress = false;
 	private boolean userInputPlaceholderTentative = false, userInputTypeLocked = false;
 	private int caretPosition = 0;
 	private WeightGUI l;
+	private Timer timer; 
+	final int DELAY = 333;
 
 	public static void go(){
 		launch();
@@ -66,9 +70,9 @@ public class FxApp extends Application {
 					 * when button is pressed, the textfield looses focus and caret is moved to 0.
 					 * Hence the previousCaretPosition is the actual position.
 					 */
-					System.out.println("onChange "+oldValue+" --> "+newValue+"    ("+caretPosition+")");
+//					System.out.println("onChange "+oldValue+" --> "+newValue+"    ("+caretPosition+")");
 					if(newValue.intValue() == 0 && caretPosition != 0){
-						System.out.println("Caret forced");
+//						System.out.println("Caret forced");
 						userInput.positionCaret(caretPosition);
 					}
 				}
@@ -147,16 +151,21 @@ public class FxApp extends Application {
 	private void onTaraButtonPressed(){ l.onTaraButtonPressed(); }
 	private void onZeroButtonPressed(){ l.onZeroButtonPressed(); }
 	private void onNumBtnPressed(final FxAppInputBtnHandler inputHandler, final int btn) {
-		if(userInputInprogress){
-			String txt = userInput.getText();
-			int lengthBefore = txt.length();
-			txt = inputHandler.onButtonPressed(txt, btn, caretPosition, inputType);
-			userInput.setText(txt);
-			int lengthAfter = txt.length();
-			if(lengthAfter > lengthBefore) caretPosition += 1;
+		char c = inputHandler.onButtonPressed(btn, inputType, DELAY);
+		if(timer == null) timer = new Timer();
+		else {
+			timer.cancel();
+			timer = new Timer();
 		}
+		
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				l.onNumBtnPressed(c);
+			}
+		}, DELAY);
+		
 		userInput.requestFocus();
-		userInput.positionCaret(caretPosition);
 	}
 	private void onShiftBtnPressed() {
 		toggle_input_type();

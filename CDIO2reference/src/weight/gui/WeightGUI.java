@@ -18,6 +18,8 @@ public class WeightGUI implements IWeightInterfaceController {
 	public void setApp(FxApp fxApp) { this.fxApp = fxApp; fxApp.setSim(this); }
 	
 
+	// System --> GUI
+	// Methods required by interface
 	@Override
 	public void registerObserver(IWeightInterfaceObserver uiObserver) {
 		this.observers.add(uiObserver);
@@ -52,6 +54,9 @@ public class WeightGUI implements IWeightInterfaceController {
 		fxApp.softkeysShow(texts, firstSoftkey, sftkeysChecked);
 		
 	}
+	
+	
+	// GUI --> System
 	public void onSliderValueChange(Double newValue) {
 		for (IWeightInterfaceObserver o : observers) {
 			o.notifyWeightChange(newValue / 1000);
@@ -67,6 +72,11 @@ public class WeightGUI implements IWeightInterfaceController {
 	public void onZeroButtonPressed() {
 		for (IWeightInterfaceObserver o : observers) {
 			o.notifyKeyPress(KeyPress.Zero());
+		}
+	}
+	public void onNumBtnPressed(char btn){
+		for (IWeightInterfaceObserver o : observers) {
+			o.notifyKeyPress(KeyPress.Character(btn));
 		}
 	}
 	
