@@ -75,6 +75,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 			weightController.showMessagePrimaryDisplay(message.getMessage());
 			break;
 		case Q:
+			System.exit(1);
 			break;
 		case RM204:
 		case RM208:
@@ -147,7 +148,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 	}
 
 	private String weightString() {
-		return String.format(Locale.US, "%.4f", load-tare) + " KG";
+		return String.format(Locale.US, "%.4f", load-tare);
 	}
 
 }
