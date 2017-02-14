@@ -148,7 +148,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 	}
 
 	private String weightString() {
-		return String.format(Locale.US, "%.4f", load-tare) + " KG";
+		return String.format(Locale.US, "%.4f", load-tare);
 	}
 
 }
