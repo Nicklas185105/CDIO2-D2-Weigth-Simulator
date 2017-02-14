@@ -90,14 +90,19 @@ public class DummySocketHandler implements ISocketController {
 					} 
 					break;
 				case "D":
+					notifyObservers(new SocketInMessage(SocketMessageType.D, inLine.split(" ")[1]));
 					break;
 				case "T":
+					notifyObservers(new SocketInMessage(SocketMessageType.T, ""));
 					break;
 				case "S":
+					notifyObservers(new SocketInMessage(SocketMessageType.S, ""));
 					break;
 				case "B":
+					notifyObservers(new SocketInMessage(SocketMessageType.B, inLine.split(" " )[1]));
 					break;
 				case "Q":
+					notifyObservers(new SocketInMessage(SocketMessageType.Q,""));
 					break;
 				default:
 					sendMessage(new SocketOutMessage("Unknown Command"));
