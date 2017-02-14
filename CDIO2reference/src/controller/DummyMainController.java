@@ -75,6 +75,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 			weightController.showMessagePrimaryDisplay(message.getMessage());
 			break;
 		case Q:
+			System.exit(1);
 			break;
 		case RM204:
 		case RM208:
