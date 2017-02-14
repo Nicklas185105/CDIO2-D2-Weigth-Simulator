@@ -103,9 +103,10 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 			System.out.println("Softbutton " + keyPress.getKeyNumber() + " pressed");
 			if (weightState==WeightState.RM20 && keyPress.getKeyNumber()==0){
 				weightState= WeightState.READY;
-				socketHandler.sendMessage(new SocketOutMessage(weightInput));
+				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
+				showWeight();
 			}
 			break;
 		case TEXT:
@@ -125,7 +126,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
-				weightController.showMessagePrimaryDisplay("");
+				showWeight();
 			}
 			break;
 		case C:

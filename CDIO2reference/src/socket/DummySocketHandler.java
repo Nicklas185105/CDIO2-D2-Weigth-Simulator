@@ -16,8 +16,8 @@ public class DummySocketHandler implements ISocketController {
 	// Maybe add some way to keep track of multiple connections?
 	private BufferedReader inStream;
 	private DataOutputStream outStream;
-	
-			
+
+
 	@Override
 	public void registerObserver(ISocketObserver observer) {
 		observers.add(observer);
@@ -61,8 +61,8 @@ public class DummySocketHandler implements ISocketController {
 			// TODO Maybe notify MainController?
 			e1.printStackTrace();
 		} 
-		
-		
+
+
 	}
 
 	private void waitForConnections(ServerSocket listeningSocket) {
@@ -79,18 +79,25 @@ public class DummySocketHandler implements ISocketController {
 				inLine = inStream.readLine();
 				System.out.println(inLine);
 				if (inLine==null) break;
-				 switch (inLine.split(" ")[0]) {
+				String[] inLineArray = inLine.split(" ");
+				switch (inLineArray[0]) {
 				case "RM20":
 					//TODO implement logic for RM command
 					System.out.println();
-					if ("4".equals(inLine.split(" ")[1])){
+					if (inLineArray.length<3) {
+						sendError();
+					} else if ("4".equals(inLine.split(" ")[1])){
 						notifyObservers(new SocketInMessage(SocketMessageType.RM204, inLine.split(" ")[2]));
 					} else if ("8".equals(inLine.split(" ")[1])){
 						notifyObservers(new SocketInMessage(SocketMessageType.RM208,inLine.split(" ")[2]));
 					} 
 					break;
 				case "D":
-					notifyObservers(new SocketInMessage(SocketMessageType.D, inLine.split(" ")[1]));
+					if (inLineArray.length<2) { 
+						sendError();
+					} else {
+						notifyObservers(new SocketInMessage(SocketMessageType.D, inLine.split(" ")[1]));
+					}
 					break;
 				case "T":
 					notifyObservers(new SocketInMessage(SocketMessageType.T, ""));
@@ -99,7 +106,11 @@ public class DummySocketHandler implements ISocketController {
 					notifyObservers(new SocketInMessage(SocketMessageType.S, ""));
 					break;
 				case "B":
-					notifyObservers(new SocketInMessage(SocketMessageType.B, inLine.split(" " )[1]));
+					if (inLineArray.length<2){
+						sendError();
+					} else {
+						notifyObservers(new SocketInMessage(SocketMessageType.B, inLine.split(" " )[1]));
+					}
 					break;
 				case "Q":
 					notifyObservers(new SocketInMessage(SocketMessageType.Q,""));
@@ -108,10 +119,14 @@ public class DummySocketHandler implements ISocketController {
 					sendMessage(new SocketOutMessage("Unknown Command"));
 					break;
 				}
-			 }
+			}
 		} catch (IOException e) {
 			//TODO maybe notify mainController?
 		} 
+	}
+
+	private void sendError() {
+		sendMessage(new SocketOutMessage("Error in command"));
 	}
 
 }
