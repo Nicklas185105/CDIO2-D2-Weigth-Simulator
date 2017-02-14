@@ -106,7 +106,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
-				weightController.showMessagePrimaryDisplay("");
+				showWeight();
 			}
 			break;
 		case TEXT:
@@ -126,7 +126,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
-				weightController.showMessagePrimaryDisplay("");
+				showWeight();
 			}
 			break;
 		case C:
