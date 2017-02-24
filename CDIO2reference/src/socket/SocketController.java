@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import socket.SocketInMessage.SocketMessageType;
+import sun.net.NetworkServer;
 
 public class SocketController implements ISocketController {
 	Set<ISocketObserver> observers = new HashSet<ISocketObserver>();
@@ -76,21 +77,26 @@ public class SocketController implements ISocketController {
 				String[] inLineArray = inLine.split(" ");
 				switch (inLineArray[0]) {
 				case "RM20":
-					//TODO implement logic for RM command
-					System.out.println();
 					if (inLineArray.length<3) {
 						sendError();
 					} else if ("4".equals(inLine.split(" ")[1])){
-						notifyObservers(new SocketInMessage(SocketMessageType.RM204, inLine.split(" ")[2]));
+						notifyObservers(new SocketInMessage(SocketMessageType.RM204, sanitizeInput(inLine, "RM20 4 ")));
 					} else if ("8".equals(inLine.split(" ")[1])){
-						notifyObservers(new SocketInMessage(SocketMessageType.RM208,inLine.split(" ")[2]));
+						notifyObservers(new SocketInMessage(SocketMessageType.RM208, sanitizeInput(inLine, "RM20 8 ")));
 					} 
 					break;
 				case "D":
 					if (inLineArray.length<2) { 
 						sendError();
 					} else {
-						notifyObservers(new SocketInMessage(SocketMessageType.D, inLine.split(" ")[1]));
+						notifyObservers(new SocketInMessage(SocketMessageType.D, sanitizeInput(inLine, "D ")));
+					}
+					break;
+				case "P111":
+					if (inLineArray.length<2){
+						sendError();
+					} else {
+						notifyObservers(new SocketInMessage(SocketMessageType.P111, sanitizeInput(inLine, "P111 ")));
 					}
 					break;
 				case "DW":
@@ -120,6 +126,10 @@ public class SocketController implements ISocketController {
 		} catch (IOException e) {
 			//TODO maybe notify mainController?
 		} 
+	}
+
+	private String sanitizeInput(String inLine, String prefix) {
+		return inLine.replace(prefix, "").replace("\"", "");
 	}
 
 	private void sendError() {
