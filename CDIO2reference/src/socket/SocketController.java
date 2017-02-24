@@ -66,7 +66,6 @@ public class SocketController implements ISocketController {
 			inStream = new BufferedReader(new InputStreamReader(activeSocket.getInputStream()));
 			outStream = new PrintWriter(activeSocket.getOutputStream()); 
 			String inLine = null;
-			System.out.println(inStream);
 			//.readLine is a blocking call 
 			//TODO How do you handle simultaneous input and output on socket?
 			//TODO this only allows for one open connection - how would you handle multiple connections?
