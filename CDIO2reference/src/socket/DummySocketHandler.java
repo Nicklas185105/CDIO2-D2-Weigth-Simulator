@@ -99,6 +99,9 @@ public class DummySocketHandler implements ISocketController {
 						notifyObservers(new SocketInMessage(SocketMessageType.D, inLine.split(" ")[1]));
 					}
 					break;
+				case "DW":
+						notifyObservers(new SocketInMessage(SocketMessageType.DW, ""));
+					break;
 				case "T":
 					notifyObservers(new SocketInMessage(SocketMessageType.T, ""));
 					break;
