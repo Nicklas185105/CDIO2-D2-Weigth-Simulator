@@ -1,9 +1,9 @@
 package socket;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ public class DummySocketHandler implements ISocketController {
 	Set<ISocketObserver> observers = new HashSet<ISocketObserver>();
 	// Maybe add some way to keep track of multiple connections?
 	private BufferedReader inStream;
-	private DataOutputStream outStream;
+	private PrintWriter outStream;
 
 
 	@Override
@@ -38,13 +38,8 @@ public class DummySocketHandler implements ISocketController {
 	@Override
 	public void sendMessage(SocketOutMessage message) {
 		if (outStream!=null){
-			try {
-				outStream.writeBytes(message.getMessage() + "\r\n");
-				outStream.flush();
-			} catch (IOException e) {
-				// TODO Notify someone???
-				e.printStackTrace();
-			}
+			outStream.println(message.getMessage());
+			outStream.flush();
 		} else {
 			//TODO maybe tell someone that connection is closed?
 		}
@@ -53,7 +48,7 @@ public class DummySocketHandler implements ISocketController {
 	@Override
 	public void run() {
 		//TODO some logic for listening to a socket //(Using try with resources for auto-close of socket)
-		try (ServerSocket listeningSocket = new ServerSocket(Port)){ 
+		try (ServerSocket listeningSocket = new ServerSocket(PORT)){ 
 			while (true){
 				waitForConnections(listeningSocket); 	
 			}		
@@ -69,7 +64,7 @@ public class DummySocketHandler implements ISocketController {
 		try {
 			Socket activeSocket = listeningSocket.accept(); //Blocking call
 			inStream = new BufferedReader(new InputStreamReader(activeSocket.getInputStream()));
-			outStream = new DataOutputStream(activeSocket.getOutputStream());
+			outStream = new PrintWriter(activeSocket.getOutputStream()); 
 			String inLine = null;
 			System.out.println(inStream);
 			//.readLine is a blocking call 
