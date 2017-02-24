@@ -72,15 +72,14 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			showWeight();
 			break;
 		case D:
-			weightController.showMessagePrimaryDisplay(message.getMessage().replace("\"", ""));
+			weightController.showMessagePrimaryDisplay(message.getMessage());
 			break;
 		case DW:
-			weightController.showMessageSecondaryDisplay("");
 			showWeight();
 			socketHandler.sendMessage(new SocketOutMessage("DW A"));
 			break;
 		case P111:
-			weightController.showMessageSecondaryDisplay(message.getMessage().replace("\"", ""));
+			weightController.showMessageSecondaryDisplay(message.getMessage());
 			
 			break;
 		case Q:
@@ -88,7 +87,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		case RM204:
 		case RM208:
-			weightController.showMessagePrimaryDisplay(message.getMessage().replaceAll("\"", ""));
+			weightController.showMessageSecondaryDisplay(message.getMessage());
 			weightState=WeightState.RM20;
 			weightController.setSoftButtonTexts(new String[]{"OK"});;
 			socketHandler.sendMessage(new SocketOutMessage("RM20 B"));
@@ -115,6 +114,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
+				weightController.setSoftButtonTexts(new String[]{"","","","","",""});
 				showWeight();
 			}
 			break;

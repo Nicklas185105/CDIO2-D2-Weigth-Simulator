@@ -50,6 +50,9 @@ public class WeightGUI implements IWeightInterfaceController {
 	@Override
 	public void setSoftButtonTexts(String[] texts) {
 		int firstSoftkey = 0;
+		if (texts == null) {
+			texts = new String[0];
+		}
 		boolean[] sftkeysChecked = new boolean[texts.length];
 		Arrays.fill(sftkeysChecked, false);
 		fxApp.softkeysShow(texts, firstSoftkey, sftkeysChecked);
