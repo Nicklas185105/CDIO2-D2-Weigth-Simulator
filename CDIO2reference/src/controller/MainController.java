@@ -15,7 +15,7 @@ import weight.KeyPress;
  * @version 0.1 2017-01-24
  *
  */
-public class DummyMainController implements IMainController, ISocketObserver, IWeightInterfaceObserver {
+public class MainController implements IMainController, ISocketObserver, IWeightInterfaceObserver {
 
 	private ISocketController socketHandler;
 	private IWeightInterfaceController weightController;
@@ -24,7 +24,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 	double load;
 	double tare;
 	
-	public DummyMainController(ISocketController socketHandler, IWeightInterfaceController uiController) {
+	public MainController(ISocketController socketHandler, IWeightInterfaceController uiController) {
 		this.init(socketHandler, uiController);
 	}
 
@@ -74,12 +74,20 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 		case D:
 			weightController.showMessagePrimaryDisplay(message.getMessage());
 			break;
+		case DW:
+			showWeight();
+			socketHandler.sendMessage(new SocketOutMessage("DW A"));
+			break;
+		case P111:
+			weightController.showMessageSecondaryDisplay(message.getMessage());
+			
+			break;
 		case Q:
 			System.exit(1);
 			break;
 		case RM204:
 		case RM208:
-			weightController.showMessagePrimaryDisplay(message.getMessage());
+			weightController.showMessageSecondaryDisplay(message.getMessage());
 			weightState=WeightState.RM20;
 			weightController.setSoftButtonTexts(new String[]{"OK"});;
 			socketHandler.sendMessage(new SocketOutMessage("RM20 B"));
@@ -106,6 +114,7 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
+				weightController.setSoftButtonTexts(new String[]{"","","","","",""});
 				showWeight();
 			}
 			break;

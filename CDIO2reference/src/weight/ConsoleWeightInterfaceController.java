@@ -7,7 +7,7 @@ import java.util.Set;
 
 import weight.KeyPress.KeyPressType;
 
-public class DummyConsoleController implements IWeightInterfaceController{
+public class ConsoleWeightInterfaceController implements IWeightInterfaceController{
 	Set<IWeightInterfaceObserver> observers = new HashSet<IWeightInterfaceObserver>();
 	List<String> softKeyTexts;
 	private String primaryDisp;
@@ -56,7 +56,7 @@ public class DummyConsoleController implements IWeightInterfaceController{
 		System.out.println("InputType: " + inputType);
 		System.out.println("----");
 		System.out.println("Brutto Belastning:" + brutto );
-		System.out.println("tast B x.xxx for vægtændring");
+		System.out.println("tast B x.xxx for vï¿½gtï¿½ndring");
 		System.out.println("tast Tast S X for softkey nummer X");
 		System.out.println("tast TARA for tara");
 		System.out.println("SoftKeys:");
