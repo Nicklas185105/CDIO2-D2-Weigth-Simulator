@@ -3,7 +3,6 @@ package weight.gui;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javafx.scene.text.Text;
 import weight.IWeightInterfaceController;
 import weight.IWeightInterfaceObserver;
 import weight.KeyPress;
@@ -53,7 +52,6 @@ public class WeightGUI implements IWeightInterfaceController {
 		boolean[] sftkeysChecked = new boolean[texts.length];
 		Arrays.fill(sftkeysChecked, false);
 		fxApp.softkeysShow(texts, firstSoftkey, sftkeysChecked);
-		
 	}
 	
 	
@@ -63,15 +61,25 @@ public class WeightGUI implements IWeightInterfaceController {
 			o.notifyWeightChange(newValue / 1000);
 		}
 	}
-	public void onTaraButtonPressed() {
+	void onExitButtonPressed() {
+		for (IWeightInterfaceObserver o : observers) {
+			o.notifyKeyPress(KeyPress.Exit());
+		}
+	}
+	void onZeroButtonPressed() {
+		for (IWeightInterfaceObserver o : observers) {
+			o.notifyKeyPress(KeyPress.Zero());
+		}
+	}
+	void onTaraButtonPressed() {
 		for (IWeightInterfaceObserver o : observers) {
 			o.notifyKeyPress(KeyPress.Tara());
 		}
 		
 	}
-	public void onZeroButtonPressed() {
+	void onSendButtonPressed() {
 		for (IWeightInterfaceObserver o : observers) {
-			o.notifyKeyPress(KeyPress.Zero());
+			o.notifyKeyPress(KeyPress.Send());
 		}
 	}
 	public void onNumBtnPressed(char btn){

@@ -114,10 +114,8 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 			weightInput+=keyPress.getCharacter();
 			weightController.showMessageSecondaryDisplay(weightInput);
 			break;
-		case TARA:
-			System.out.println("TARA pressed");
-			tare = load;
-			showWeight();
+		case EXIT:
+			System.exit(1);
 			break;
 		case ZERO:
 			System.out.println("ZERO pressed");
@@ -128,6 +126,14 @@ public class DummyMainController implements IMainController, ISocketObserver, IW
 				weightController.showMessageSecondaryDisplay(weightInput);
 				showWeight();
 			}
+			break;
+		case TARA:
+			System.out.println("TARA pressed");
+			tare = load;
+			showWeight();
+			break;
+		case SEND:
+			//TODO
 			break;
 		case C:
 			System.out.println("C pressed");
