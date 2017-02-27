@@ -23,7 +23,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 	private String weightInput = "";
 	double load;
 	double tare;
-	private Object keyState;
+	private KeyState keyState=KeyState.K1;
 	
 	public MainController(ISocketController socketHandler, IWeightInterfaceController uiController) {
 		this.init(socketHandler, uiController);
@@ -118,8 +118,10 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		case "3" :
 			this.keyState = KeyState.K3;
+			break;
 		case "4" :
 			this.keyState = KeyState.K4;
+			break;
 		default:
 			socketHandler.sendMessage(new SocketOutMessage("ES"));
 			break;

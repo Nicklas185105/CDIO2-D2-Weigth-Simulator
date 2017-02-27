@@ -108,6 +108,11 @@ public class SocketController implements ISocketController {
 				case "S":
 					notifyObservers(new SocketInMessage(SocketMessageType.S, ""));
 					break;
+				case "K":
+					if (inLine.split(" ").length>1){
+						notifyObservers(new SocketInMessage(SocketMessageType.K, inLine.split(" ")[1]));
+					}
+					break;
 				case "B":
 					if (inLineArray.length<2){
 						sendError();
