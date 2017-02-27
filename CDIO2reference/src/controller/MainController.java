@@ -23,6 +23,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 	private String weightInput = "";
 	double load;
 	double tare;
+	private Object keyState;
 	
 	public MainController(ISocketController socketHandler, IWeightInterfaceController uiController) {
 		this.init(socketHandler, uiController);
@@ -92,6 +93,9 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			weightController.setSoftButtonTexts(new String[]{"OK"});;
 			socketHandler.sendMessage(new SocketOutMessage("RM20 B"));
 			break;
+		case K:
+			handleKMessage(message);
+			break;
 		case S:
 			System.out.println("sending S S message");
 			socketHandler.sendMessage(new SocketOutMessage("S S " + weightString()));
@@ -99,6 +103,25 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 		case T:
 			tare = load;
 			showWeight();
+			break;
+
+		}
+	}
+	
+	private void handleKMessage(SocketInMessage message) {
+		switch (message.getMessage()) {
+		case "1" :
+			this.keyState = KeyState.K1;
+			break;
+		case "2" :
+			this.keyState = KeyState.K2;
+			break;
+		case "3" :
+			this.keyState = KeyState.K3;
+		case "4" :
+			this.keyState = KeyState.K4;
+		default:
+			socketHandler.sendMessage(new SocketOutMessage("ES"));
 			break;
 		}
 	}
@@ -142,7 +165,10 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			showWeight();
 			break;
 		case SEND:
-			//TODO
+			System.out.println("SEND button pressed");
+			if (keyState.equals(KeyState.K4) || keyState.equals(KeyState.K3) ){
+				socketHandler.sendMessage(new SocketOutMessage("K A 3"));
+			}
 			break;
 		case C:
 			System.out.println("C pressed");
