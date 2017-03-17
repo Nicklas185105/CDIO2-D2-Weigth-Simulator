@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import socket.SocketInMessage.SocketMessageType;
-import sun.net.NetworkServer;
 
 public class SocketController implements ISocketController {
 	Set<ISocketObserver> observers = new HashSet<ISocketObserver>();
