@@ -140,3 +140,4 @@ public class SocketController implements ISocketController {
 		sendMessage(new SocketOutMessage("Error in command"));
 	}
 }
+

@@ -301,8 +301,6 @@ public class FxApp extends Application {
 		});
 	}
 
-
-
 	class FxAppInputBtnHandler {
 		private int lastBtnPressed = -1;
 		private long lastTimePressed = -1;

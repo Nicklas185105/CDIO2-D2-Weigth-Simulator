@@ -17,8 +17,7 @@ public class SocketTest {
 
 	@Test
 	public void test() throws InterruptedException {
-		try {			
-			Socket socket = new Socket("localhost",ISocketController.PORT);
+		try (Socket socket = new Socket("localhost",ISocketController.PORT)) {			
 			OutputStream sos = socket.getOutputStream();
 			PrintWriter pw = new PrintWriter(sos);
 			InputStream is = socket.getInputStream();
