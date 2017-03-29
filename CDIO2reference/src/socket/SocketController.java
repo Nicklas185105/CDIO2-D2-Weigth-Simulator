@@ -15,7 +15,7 @@ public class SocketController implements ISocketController {
 	Set<ISocketObserver> observers = new HashSet<ISocketObserver>();
 	private BufferedReader inStream;
 	private PrintWriter outStream;
-	// TODO Maybe add some way to keep track of multiple connections?
+	//TODO Maybe add some way to keep track of multiple connections?
 
 
 	@Override
