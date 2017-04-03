@@ -253,7 +253,14 @@ public class FxApp extends Application {
 		}
 	}
 
-	//internal
+	
+	public void setCursorPosition(int pos){
+		if(pos > userInput.getText().length()) 
+			throw new IndexOutOfBoundsException("Invalid position: "+pos+". Text.length is: "+userInput.getText().length());
+		if(pos < 0)
+			throw new IndexOutOfBoundsException("Invalid position: "+pos+". Must be 0 or higher.");
+		caretPosition = pos;
+	}
 	public void lockUserInputType(boolean locked){
 		userInputTypeLocked = locked;
 	}
