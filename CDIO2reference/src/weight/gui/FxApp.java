@@ -254,6 +254,9 @@ public class FxApp extends Application {
 	}
 
 	//internal
+	public void lockUserInputType(boolean locked){
+		userInputTypeLocked = locked;
+	}
 	private void toggle_input_type(){
 		if(userInputTypeLocked) return;
 		switch(inputType){
