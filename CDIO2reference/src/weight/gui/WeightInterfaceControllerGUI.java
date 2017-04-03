@@ -103,4 +103,8 @@ public class WeightInterfaceControllerGUI implements IWeightInterfaceController 
 			o.notifyKeyPress(KeyPress.SoftButton(i));
 		}
 	}
+	@Override
+	public void lockUserInputType(boolean locked) {
+		fxApp.lockUserInputType(locked);
+	}
 }

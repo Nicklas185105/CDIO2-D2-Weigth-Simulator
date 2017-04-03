@@ -14,4 +14,6 @@ public interface IWeightInterfaceController extends Runnable {
 	public enum InputType {
 		UPPER, LOWER, NUMBERS
 	}
+
+	void lockUserInputType(boolean b);
 }

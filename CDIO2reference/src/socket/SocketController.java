@@ -133,8 +133,13 @@ public class SocketController implements ISocketController {
 		} 
 	}
 
-	private String sanitizeInput(String inLine, String prefix) {
-		return inLine.replace(prefix, "").replace("\"", "");
+
+	private String[] sanitizeInput(String inLine, String prefix){
+		String[] array = inLine.replace(prefix, "").split(" ");
+		for (String string : array) {
+			string.replace("\"", "");
+		}
+		return array;
 	}
 	private void sendError() {
 		sendMessage(new SocketOutMessage("Error in command"));

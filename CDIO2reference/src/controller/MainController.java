@@ -7,6 +7,7 @@ import socket.ISocketObserver;
 import socket.SocketInMessage;
 import socket.SocketOutMessage;
 import weight.IWeightInterfaceController;
+import weight.IWeightInterfaceController.InputType;
 import weight.IWeightInterfaceObserver;
 import weight.KeyPress;
 /**
@@ -95,10 +96,12 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			weightController.showMessageSecondaryDisplay(message.getMessage());
 			break;
 		case RM204:
+			weightController.changeInputType(InputType.NUMBERS);
+			weightController.lockUserInputType(true);
 		case RM208:
 			weightController.showMessageSecondaryDisplay(message.getMessage());
 			weightState=WeightState.RM20;
-			weightController.setSoftButtonTexts(new String[]{"", "", "", "", "", "OK"});;
+			weightController.setSoftButtonTexts(new String[]{"", "Erase", "<--", "-->", "OK", "Cancel"});;
 			socketHandler.sendMessage(new SocketOutMessage("RM20 B"));
 			break;
 		case K:
@@ -135,6 +138,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			System.out.println("Softbutton " + keyPress.getKeyNumber() + " pressed");
 			if (weightState==WeightState.RM20 && keyPress.getKeyNumber()==5){
 				weightState= WeightState.READY;
+				weightController.lockUserInputType(false);
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
@@ -156,6 +160,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			System.out.println("ZERO pressed");
 			if (weightState==WeightState.RM20){
 				weightState= WeightState.READY;
+				weightController.lockUserInputType(false);
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);

@@ -1,16 +1,24 @@
 package socket;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class SocketInMessage {
 	private SocketMessageType type;
-	private String message;
+	private List<String> parameters = new ArrayList<>();
 
-	public SocketInMessage(SocketMessageType type, String message) {
-		this.message=message;
+	public SocketInMessage(SocketMessageType type, String... message) {
+		this.parameters.addAll(Arrays.asList(message));
 		this.type=type;
 	}
 	
 	public String getMessage() {
-		return message;
+		return parameters.get(0);
+	}
+	
+	public List<String> getParameters(){
+		return parameters;
 	}
 	
 	public SocketMessageType getType() {

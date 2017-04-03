@@ -121,4 +121,10 @@ public class ConsoleWeightInterfaceController implements IWeightInterfaceControl
 		setSoftButtonTexts(texts);
 		showMenu();
 	}
+
+	@Override
+	public void lockUserInputType(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 }
