@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -135,14 +136,55 @@ public class SocketController implements ISocketController {
 
 
 	private String[] sanitizeInput(String inLine, String prefix){
-		String[] array = inLine.replace(prefix, "").split(" ");
-		for (String string : array) {
-			string.replace("\"", "");
+		String t = inLine.replace(prefix, "");
+		ArrayList<String> l = new ArrayList<>();
+		String word = "";
+		boolean inQuotation = false;
+		for(char c : t.toCharArray()){
+			if(inQuotation){
+				if(c == '\"'){
+					inQuotation = false;
+					word = word.trim();
+//					if(!word.isEmpty()){
+						l.add(word);
+						word = "";
+//					}
+				} else {
+					word += c;
+				}
+			} else {
+				if(c == '\"') {
+					inQuotation = true;
+				} else if(c == ' '){
+					word = word.trim();
+					if(!word.isEmpty()){
+						l.add(word);
+						word = "";
+					}
+				} else {
+					word += c;
+				}
+			}
 		}
-		return array;
+		if(!word.isEmpty()){
+			l.add(word);
+			word = "";
+		}
+		return l.toArray(new String[l.size()]);
 	}
 	private void sendError() {
 		sendMessage(new SocketOutMessage("Error in command"));
+	}
+	
+	public static void main(String[] args) {
+		SocketController s = new SocketController();
+//		String[] t = s.sanitizeInput("RM20 8 msg ph unit", "RM20 8");
+//		String[] t = s.sanitizeInput("RM20 8 \"msg msg\" \"ph\" \"unit\"", "RM20 8");
+//		String[] t = s.sanitizeInput("RM20 8 \"msg msg\" ph unit", "RM20 8");
+		String[] t = s.sanitizeInput("RM20 8 \"msg msg\" ph \"\"", "RM20 8");
+		System.out.println("------------------------------");
+		for(String r : t) System.out.println(r);
+		System.out.println("------------------------------");
 	}
 }
 

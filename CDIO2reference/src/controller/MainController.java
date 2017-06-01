@@ -17,16 +17,25 @@ import weight.KeyPress;
  *
  */
 public class MainController implements IMainController, ISocketObserver, IWeightInterfaceObserver {
-	public enum KeyState { K1, K2,K3,K4 }
+	public enum KeyState { 
+		K1, //        Execute function, don't send
+		K2, // Do not execute function, don't send
+		K3, // Do not execute function, but send keycode
+		K4  //        Execute function, and send keycode
+		// Send "K A 1" when Tara
+		// Send "K A 2" when Zero
+		// Send "K A 3" when Send (print)
+	}
 	public enum WeightState { READY, RM20 }
 
 	private ISocketController socketHandler;
 	private IWeightInterfaceController weightController;
-	private KeyState keyState = KeyState.K1;
+	private KeyState keyState = KeyState.K4;
 	private WeightState weightState = WeightState.READY;
 	private String weightInput = "";
-	double load;
-	double tare;
+	private String unit = ""; // used with RM20
+	double load; // load in g
+	double tare; // tare in g
 	
 	public MainController(ISocketController socketHandler, IWeightInterfaceController weightInterfaceController) {
 		this.init(socketHandler, weightInterfaceController);
@@ -67,12 +76,12 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 		}	
 		
 	}
-	
 	private void handleMessageReady(SocketInMessage message) {
 		switch(message.getType()){
 		case B:
 			load = Double.parseDouble(message.getMessage());
-			showWeight();
+			System.out.println("Load = "+load+"\nTare = "+tare);
+			weightController.setLoad(load);
 			break;
 		case Q:
 			System.exit(1);
@@ -86,20 +95,26 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		case S:
 			System.out.println("sending S S message");
-			socketHandler.sendMessage(new SocketOutMessage("S S " + weightString()));
+			socketHandler.sendMessage(new SocketOutMessage("S S      " + String.format(Locale.US, "%.4f", (load-tare)/1000) + " kg"));
 			break;
 		case T:
 			tare = load;
+			socketHandler.sendMessage(new SocketOutMessage("T S      " + String.format(Locale.US, "%.4f", tare/1000) + " kg"));
 			showWeight();
 			break;
 		case P111:
-			weightController.showMessageSecondaryDisplay(message.getMessage());
+			weightController.showMessageTernaryDisplay(message.getMessage());
 			break;
 		case RM204:
 			weightController.changeInputType(InputType.NUMBERS);
 			weightController.lockUserInputType(true);
+			// Fall through to RM208
 		case RM208:
-			weightController.showMessageSecondaryDisplay(message.getMessage());
+			weightController.showMessageTernaryDisplay(message.getMessage());
+			String placeholder = message.getParameters().get(1);
+			unit = message.getParameters().get(2);
+			unit = handleUnit(unit);
+			weightController.showMessageSecondaryDisplay(placeholder+" "+unit);
 			weightState=WeightState.RM20;
 			weightController.setSoftButtonTexts(new String[]{"", "Erase", "<--", "-->", "OK", "Cancel"});;
 			socketHandler.sendMessage(new SocketOutMessage("RM20 B"));
@@ -109,7 +124,6 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		}
 	}
-
 	private void handleKMessage(SocketInMessage message) {
 		switch (message.getMessage()) {
 		case "1" :
@@ -129,6 +143,12 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		}
 	}
+	private String handleUnit(String unit){
+		if(unit.startsWith("&1")){ weightController.changeInputType(InputType.UPPER); return unit.substring(2); }
+		if(unit.startsWith("&2")){ weightController.changeInputType(InputType.LOWER); return unit.substring(2); }
+		if(unit.startsWith("&3")){ weightController.changeInputType(InputType.NUMBERS); return unit.substring(2); }
+		return unit;
+	}
 	
 	//Listening for UI input
 	@Override
@@ -136,7 +156,8 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 		switch (keyPress.getType()) {
 		case SOFTBUTTON:
 			System.out.println("Softbutton " + keyPress.getKeyNumber() + " pressed");
-			if (weightState==WeightState.RM20 && keyPress.getKeyNumber()==5){
+			if (weightState==WeightState.RM20 && keyPress.getKeyNumber() == 4){
+				System.out.println("HULUBULU");
 				weightState= WeightState.READY;
 				weightController.lockUserInputType(false);
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
@@ -153,8 +174,8 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		case TEXT:
 			System.out.println("Character " + keyPress.getCharacter() + " pressed");
-			weightInput+=keyPress.getCharacter();
-			weightController.showMessageSecondaryDisplay(weightInput);
+			weightInput += keyPress.getCharacter();
+			weightController.showMessageSecondaryDisplay(weightInput + " " + unit);
 			break;
 		case ZERO:
 			System.out.println("ZERO pressed");
@@ -164,8 +185,11 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
-				showWeight();
 			}
+			load = 0;
+			tare = 0;
+			weightController.setLoad(load);
+			showWeight();
 			break;
 		case CANCEL:
 			System.out.println("C pressed");
@@ -174,8 +198,9 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			System.exit(1);
 			break;
 		case SEND:
+			System.out.println(keyState);
 			if (keyState.equals(KeyState.K4) || keyState.equals(KeyState.K3) ){
-				socketHandler.sendMessage(new SocketOutMessage("K A 3"));
+				socketHandler.sendMessage(new SocketOutMessage("K A 3 "+String.format(Locale.US, "%.4f", tare/1000) + " kg"));
 			}
 			break;
 		}
@@ -187,9 +212,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 		showWeight();
 	}
 	private void showWeight() {
-		weightController.showMessagePrimaryDisplay(weightString());
-	}
-	private String weightString() {
-		return String.format(Locale.US, "%.4f", load-tare);
+		String str = String.format(Locale.US, "%.4f", (load-tare)/1000)+" kg";
+		weightController.showMessagePrimaryDisplay(str);
 	}
 }

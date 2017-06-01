@@ -127,4 +127,9 @@ public class ConsoleWeightInterfaceController implements IWeightInterfaceControl
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setLoad(double loadinkg) {
+		// Ignored
+	}
 }

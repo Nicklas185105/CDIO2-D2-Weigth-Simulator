@@ -47,7 +47,7 @@ public class FxApp extends Application {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("local.fxml"));
 			StackPane root = (StackPane) loader.load();
 
-			Scene scene = new Scene(root,974,400);
+			Scene scene = new Scene(root,974,420);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setX(0);
 			primaryStage.setY(0);
@@ -167,7 +167,7 @@ public class FxApp extends Application {
 
 
 	//output
-	private void onSliderValueChange(Double newValue){ l.onSliderValueChange(newValue); }
+	private void onSliderValueChange(double newValue){ l.onSliderValueChange(newValue); }
 	private void onExitButtonPressed(){ l.onExitButtonPressed(); }
 	private void onZeroButtonPressed(){ l.onZeroButtonPressed(); }
 	private void onTaraButtonPressed(){ l.onTaraButtonPressed(); }
@@ -215,7 +215,7 @@ public class FxApp extends Application {
 			public void run() {
 				txtbottom.setText(msg);
 				txtbottom.setVisible(true);
-				txtinfo[2].setVisible(false);
+//				txtinfo[2].setVisible(false);
 				txtinfo[3].setVisible(false);
 				userInput.setVisible(false);
 			}
@@ -252,7 +252,9 @@ public class FxApp extends Application {
 			i++;
 		}
 	}
-
+	public void setLoad(double load){
+		slider.setValue(load);
+	}
 	
 	public void setCursorPosition(int pos){
 		if(pos > userInput.getText().length()) 

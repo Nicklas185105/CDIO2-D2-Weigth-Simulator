@@ -10,6 +10,7 @@ public interface IWeightInterfaceController extends Runnable {
 	void showMessageTernaryDisplay(String string);
 	void changeInputType(InputType type);
 	void setSoftButtonTexts(String[] texts);
+	void setLoad(double load);
 	
 	public enum InputType {
 		UPPER, LOWER, NUMBERS

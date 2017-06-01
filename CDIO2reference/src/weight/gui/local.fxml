@@ -10,9 +10,9 @@
 
 <StackPane fx:id="stackpane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weight.gui.FxApp">
    <children>
-      <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="974.0" stylesheets="@application.css">
+      <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="425.0" prefWidth="974.0" stylesheets="@application.css">
          <children>
-            <VBox styleClass="display" stylesheets="@application.css">
+            <VBox prefHeight="57.0" prefWidth="974.0" styleClass="display" stylesheets="@application.css">
                <children>
                   <Slider fx:id="slider" blockIncrement="1000.0" majorTickUnit="500.0" max="6000.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="4" prefHeight="14.0" prefWidth="940.0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
                      <VBox.margin>
@@ -24,7 +24,7 @@
             <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" prefHeight="1.0" />
             <HBox stylesheets="@application.css">
                <children>
-                  <VBox>
+                  <VBox prefWidth="672.0">
                      <children>
                         <HBox alignment="CENTER_LEFT" styleClass="display" stylesheets="@application.css">
                            <children>
@@ -64,9 +64,9 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <StackPane styleClass="display">
+                        <StackPane alignment="CENTER_RIGHT" styleClass="display">
                            <children>
-                              <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0">
+                              <VBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="122.0" prefWidth="672.0">
                                  <children>
                                     <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0">
                                        <children>
@@ -83,12 +83,15 @@
                                           <Insets left="10.0" right="10.0" />
                                        </padding>
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0">
+                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="102.0" prefWidth="672.0">
                                        <children>
                                           <Text fx:id="txt_info_3" fill="#008dbc" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="502.0">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
                                           </Text>
                                        </children>
                                        <padding>
@@ -97,9 +100,9 @@
                                     </HBox>
                                  </children>
                               </VBox>
-                              <HBox alignment="BOTTOM_RIGHT" prefHeight="103.0" prefWidth="253.0">
+                              <HBox alignment="TOP_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="256.0">
                                  <children>
-                                    <Text fx:id="txt_load" fill="#008dbc" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="display" text="0.000kg" textAlignment="RIGHT" wrappingWidth="346.0">
+                                    <Text fx:id="txt_load" fill="#008dbc" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="display" text="0.000 kg" textAlignment="RIGHT" wrappingWidth="373.0">
                                        <font>
                                           <Font size="64.0" />
                                        </font>
@@ -149,6 +152,7 @@
                               <TextField fx:id="userInput" styleClass="input" stylesheets="@application.css" />
                            </children>
                         </StackPane>
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" prefHeight="1.0" />
                         <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" styleClass="display" stylesheets="@application.css">
                            <children>
                               <Text fx:id="txt_softkey_1" fill="#008dbc" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="100.0">
@@ -186,7 +190,6 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" prefHeight="1.0" />
                         <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="42.0" styleClass="display" stylesheets="@application.css">
                            <children>
                               <Button fx:id="btn_softkey_1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0" styleClass="softkey" stylesheets="@application.css" textOverrun="CLIP">

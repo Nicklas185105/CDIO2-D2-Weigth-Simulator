@@ -65,7 +65,7 @@ public class WeightInterfaceControllerGUI implements IWeightInterfaceController 
 	// GUI --> System
 	public void onSliderValueChange(Double newValue) {
 		for (IWeightInterfaceObserver o : observers) {
-			o.notifyWeightChange(newValue / 1000);
+			o.notifyWeightChange(newValue);
 		}
 	}
 	void onExitButtonPressed() {
@@ -106,5 +106,9 @@ public class WeightInterfaceControllerGUI implements IWeightInterfaceController 
 	@Override
 	public void lockUserInputType(boolean locked) {
 		fxApp.lockUserInputType(locked);
+	}
+	@Override
+	public void setLoad(double load) {
+		fxApp.setLoad(load);
 	}
 }
