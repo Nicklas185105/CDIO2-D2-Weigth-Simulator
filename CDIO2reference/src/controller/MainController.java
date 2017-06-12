@@ -88,6 +88,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		case D:
 			weightController.showMessagePrimaryDisplay(message.getMessage());
+			socketHandler.sendMessage(new SocketOutMessage("D A"));
 			break;
 		case DW:
 			showWeight();
@@ -95,15 +96,16 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		case S:
 			System.out.println("sending S S message");
-			socketHandler.sendMessage(new SocketOutMessage("S S      " + String.format(Locale.US, "%.4f", (load-tare)/1000) + " kg"));
+			socketHandler.sendMessage(new SocketOutMessage("S S      " + String.format(Locale.US, "%.3f", (load-tare)/1000) + "kg"));
 			break;
 		case T:
 			tare = load;
-			socketHandler.sendMessage(new SocketOutMessage("T S      " + String.format(Locale.US, "%.4f", tare/1000) + " kg"));
+			socketHandler.sendMessage(new SocketOutMessage("T S      " + String.format(Locale.US, "%.3f", tare/1000) + "kg"));
 			showWeight();
 			break;
 		case P111:
 			weightController.showMessageTernaryDisplay(message.getMessage());
+			socketHandler.sendMessage(new SocketOutMessage("P111 A"));
 			break;
 		case RM204:
 			weightController.changeInputType(InputType.NUMBERS);
@@ -157,10 +159,9 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 		case SOFTBUTTON:
 			System.out.println("Softbutton " + keyPress.getKeyNumber() + " pressed");
 			if (weightState==WeightState.RM20 && keyPress.getKeyNumber() == 4){
-				System.out.println("HULUBULU");
 				weightState= WeightState.READY;
 				weightController.lockUserInputType(false);
-				socketHandler.sendMessage(new SocketOutMessage("RM20 A "+ weightInput));
+				socketHandler.sendMessage(new SocketOutMessage("RM20 A \""+ weightInput + "\""));
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
 				weightController.setSoftButtonTexts(new String[]{"","","","","",""});
@@ -200,7 +201,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 		case SEND:
 			System.out.println(keyState);
 			if (keyState.equals(KeyState.K4) || keyState.equals(KeyState.K3) ){
-				socketHandler.sendMessage(new SocketOutMessage("K A 3 "+String.format(Locale.US, "%.4f", tare/1000) + " kg"));
+				socketHandler.sendMessage(new SocketOutMessage("K A 3 "+String.format(Locale.US, "%.3f", tare/1000) + "kg"));
 			}
 			break;
 		}
@@ -212,7 +213,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 		showWeight();
 	}
 	private void showWeight() {
-		String str = String.format(Locale.US, "%.4f", (load-tare)/1000)+" kg";
+		String str = String.format(Locale.US, "%.3f", (load-tare)/1000)+"kg";
 		weightController.showMessagePrimaryDisplay(str);
 	}
 }
