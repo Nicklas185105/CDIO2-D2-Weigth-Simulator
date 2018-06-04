@@ -96,11 +96,11 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		case S:
 			System.out.println("sending S S message");
-			socketHandler.sendMessage(new SocketOutMessage("S S      " + String.format(Locale.US, "%.3f", (load-tare)/1000) + "kg"));
+			socketHandler.sendMessage(new SocketOutMessage("S S     " + String.format(Locale.US, "%.3f", (load-tare)/1000) + " kg"));
 			break;
 		case T:
 			tare = load;
-			socketHandler.sendMessage(new SocketOutMessage("T S      " + String.format(Locale.US, "%.3f", tare/1000) + "kg"));
+			socketHandler.sendMessage(new SocketOutMessage("T S     " + String.format(Locale.US, "%.3f", tare/1000) + " kg"));
 			showWeight();
 			break;
 		case P111:
@@ -201,7 +201,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 		case SEND:
 			System.out.println(keyState);
 			if (keyState.equals(KeyState.K4) || keyState.equals(KeyState.K3) ){
-				socketHandler.sendMessage(new SocketOutMessage("K A 3 "+String.format(Locale.US, "%.3f", tare/1000) + "kg"));
+				socketHandler.sendMessage(new SocketOutMessage("K A 3 "+String.format(Locale.US, "%.3f", tare/1000) + " kg"));
 			}
 			break;
 		}
