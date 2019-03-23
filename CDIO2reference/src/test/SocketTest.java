@@ -23,10 +23,12 @@ public class SocketTest {
 			InputStream is = socket.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 			
-			pw.println("RM20 4 INDTAST");
+			pw.println("RM20 8 INDTAST NR  &3");
 			pw.flush();
 			String in = reader.readLine();
 			System.out.println(in);
+
+
 			
 			//socket.close();
 		} catch (UnknownHostException e) {

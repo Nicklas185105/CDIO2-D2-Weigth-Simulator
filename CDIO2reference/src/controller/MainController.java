@@ -26,7 +26,7 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 		// Send "K A 2" when Zero
 		// Send "K A 3" when Send (print)
 	}
-	public enum WeightState { READY, RM20 }
+	public enum WeightState { READY, RM20, P111 }
 
 	private ISocketController socketHandler;
 	private IWeightInterfaceController weightController;
@@ -72,9 +72,11 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			break;
 		case RM20:
 			socketHandler.sendMessage(new SocketOutMessage("RM20 waiting for input"));
-			break;		
-		}	
-		
+			break;
+		case P111:
+			socketHandler.sendMessage(new SocketOutMessage("P111 waiting for input"));
+		}
+
 	}
 	private void handleMessageReady(SocketInMessage message) {
 		switch(message.getType()){
@@ -104,8 +106,12 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			showWeight();
 			break;
 		case P111:
+			//weightController.lockUserInputType(true);
 			weightController.showMessageTernaryDisplay(message.getMessage());
-			socketHandler.sendMessage(new SocketOutMessage("P111 A"));
+			weightController.showMessageSecondaryDisplay("");
+			weightState = WeightState.P111;
+			weightController.setSoftButtonTexts(new String[]{"", "", "", "", "NEJ", "JA"});
+			socketHandler.sendMessage(new SocketOutMessage("P111 B"));
 			break;
 		case RM204:
 			weightController.changeInputType(InputType.NUMBERS);
@@ -117,8 +123,9 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 			unit = message.getParameters().get(2);
 			unit = handleUnit(unit);
 			weightController.showMessageSecondaryDisplay(placeholder+" "+unit);
+			System.out.println(placeholder+" "+unit);
 			weightState=WeightState.RM20;
-			weightController.setSoftButtonTexts(new String[]{"", "Erase", "<--", "-->", "OK", "Cancel"});;
+			weightController.setSoftButtonTexts(new String[]{"", "", "", "", "OK", "Erase"});;
 			socketHandler.sendMessage(new SocketOutMessage("RM20 B"));
 			break;
 		case K:
@@ -165,6 +172,22 @@ public class MainController implements IMainController, ISocketObserver, IWeight
 				weightInput="";
 				weightController.showMessageSecondaryDisplay(weightInput);
 				weightController.setSoftButtonTexts(new String[]{"","","","","",""});
+				showWeight();
+			} else if (weightState==WeightState.RM20 && keyPress.getKeyNumber() == 5) {
+				weightInput = "";
+				weightController.showMessageSecondaryDisplay(weightInput);
+			}
+			if (weightState==WeightState.P111 && keyPress.getKeyNumber() == 5){
+				weightState = WeightState.READY;
+				weightController.lockUserInputType(false);
+				socketHandler.sendMessage(new SocketOutMessage("P111 A \"JA\""));
+				weightController.setSoftButtonTexts(new String[] {"","","","","",""});
+				showWeight();
+			} else if (weightState == WeightState.P111 && keyPress.getKeyNumber() == 4){
+				weightState = WeightState.READY;
+				weightController.lockUserInputType(false);
+				socketHandler.sendMessage(new SocketOutMessage("P111 A \"NEJ\""));
+				weightController.setSoftButtonTexts(new String[] {"","","","","",""});
 				showWeight();
 			}
 			break;
